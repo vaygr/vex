@@ -1,0 +1,61 @@
+--- config.h.orig	2020-05-23 04:50:06.000000000 -0700
++++ config.h	2022-08-02 19:51:08.332396529 -0700
+@@ -5,6 +5,8 @@
+ static int embedded = 0;
+ static int minpwlen = 32;
+ static int mon = -1;
++static int lineheight = 0;
++static int min_lineheight = 8;
+ 
+ static const char *asterisk = "*";
+ static const char *fonts[] = {
+--- pinentry-dmenu.1.orig	2020-05-23 04:50:06.000000000 -0700
++++ pinentry-dmenu.1	2022-08-02 19:33:31.200029208 -0700
+@@ -37,6 +37,9 @@
+ .BI "min_password_length =" " 32"
+ The minimal space of the password field. This value has affect to the description field after the password field.
+ .TP
++.BI "height =" " 8"
++Height of pinentry-dmenu in pixels (no less than 8)
++.TP
+ .BI "monitor =" " -1"
+ pinentry-dmenu is displayed on the monitor number supplied. Monitor numbers are starting from 0.
+ .TP
+--- pinentry-dmenu.c.orig	2020-05-23 04:50:06.000000000 -0700
++++ pinentry-dmenu.c	2022-08-02 19:36:28.943206156 -0700
+@@ -183,7 +183,7 @@
+ static void
+ drawwin(void) {
+ 	unsigned int curpos;
+-	int x = 0, pb, pbw = 0, i;
++	int x = 0, fh = drw->fonts->h, pb, pbw = 0, i;
+ 	size_t asterlen = strlen(asterisk);
+ 	size_t pdesclen;
+ 	int leftinput;
+@@ -255,7 +255,7 @@
+ 
+ 		if ((curpos += lrpad / 2 - 1) < leftinput) {
+ 			drw_setscheme(drw, scheme[SchemeNormal]);
+-			drw_rect(drw, x + curpos, 2, 2, bh - 4, 1, 0);
++			drw_rect(drw, x + curpos, 2 + (bh - fh) / 2, 2, fh - 4, 1, 0);
+ 		}
+ 
+ 		free(censort);
+@@ -293,6 +293,7 @@
+ 
+ 	/* Calculate menu geometry */
+ 	bh = drw->fonts->h + 2;
++	bh = MAX(bh, lineheight);
+ 	mh = bh;
+ #ifdef XINERAMA
+ 	info = XineramaQueryScreens(dpy, &n);
+@@ -744,6 +745,9 @@
+ 		if (config_lookup_int(&cfg, "min_password_length", &val)) {
+ 			minpwlen = val;
+ 		}
++		if (config_lookup_int(&cfg, "height", &val)) {
++			lineheight = MAX(val, min_lineheight);
++		}
+ 		if (config_lookup_int(&cfg, "monitor", &val)) {
+ 			mon = val;
+ 		}

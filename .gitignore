@@ -1,0 +1,8 @@
+*.zip
+*.tar.*
+
+*.diff
+*.patch
+
+pkg/
+src/

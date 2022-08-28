@@ -1,0 +1,71 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+
+_pkgbase=dmenu
+pkgname=dmenu-vex
+pkgver=5.1
+pkgrel=1
+pkgdesc='Generic menu for X (VEX Edition)'
+url='https://tools.suckless.org/dmenu/'
+arch=('x86_64')
+license=('MIT')
+depends=('sh' 'glibc' 'coreutils' 'libx11' 'libxinerama' 'libxft' 'freetype2' 'fontconfig' 'libfontconfig.so')
+makedepends=('patchutils')
+provides=("${_pkgbase}")
+conflicts=("${_pkgbase}")
+source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
+        https://tools.suckless.org/${_pkgbase}/patches/password/${_pkgbase}-password-4.9.diff
+        https://tools.suckless.org/${_pkgbase}/patches/line-height/${_pkgbase}-lineheight-4.9.diff
+        https://tools.suckless.org/${_pkgbase}/patches/mouse-support/${_pkgbase}-mousesupport-${pkgver}.diff
+        https://tools.suckless.org/${_pkgbase}/patches/numbers/${_pkgbase}-numbers-4.9.diff
+        https://tools.suckless.org/${_pkgbase}/patches/xyw/${_pkgbase}-xyw-5.0.diff
+        https://tools.suckless.org/${_pkgbase}/patches/fuzzymatch/${_pkgbase}-fuzzymatch-4.9.diff
+        https://tools.suckless.org/${_pkgbase}/patches/fuzzyhighlight/${_pkgbase}-fuzzyhighlight-4.9.diff
+        fuzzymatch.patch
+        fuzzyhighlight.patch)
+sha512sums=('2f950c30e15880e6081e04d73dd0cf8f402f52d793a77d22c3f10739bfed6222a9c4e7ec8eb3fc676422fea09e30b8cf9789f67b276b22c398c96f5ed3b56453'
+            '455dfa017585962d64dbcb0a091c32809699f0e067ad28c94cc3bf86f4e6801b996bd4bac71ce15a5255114de5bdedc676b62fb76cb1b9f71be33017af1c72be'
+            'b2fa2b33b9a2391285d0c3e5df22a9d68f4193bebb4720ce71678e8a87f43ae6c0a6b3f3fd3f63aa89be95880c04c8a83e43240b6ae4f90487bdb5a9325d084c'
+            '777dd2aeba4725bf4c6adff3bf510f6eb6bf1699db06897fed2576f1162eb94e1e581c8b0d02ad3beebe5491b9631baf873f67aa8926d676f5c8b493dc6be1d7'
+            '15d88ea4f10c2fa6fb3eb7478f23b24210a0da3542ae7a5be609013500c15564eedd8153d850f079c2c1f4bab1f5e61ff51153e4c85445ee04a0de5c851e305a'
+            'af093f2e2be3c5c379add2340fcb9c4e63376a055849fe91685d033a486dae0b7d806b987b89498162ff00c3f47eaa0bda9601b08e5fdf4226af8bb18aa5057f'
+            '6ce4ce0ddb9c1058f253ce46cdae8949c468d97ce7d787831d8a4f4ebd4db672761e2552703f58d36d01b2933dea624a30627629027b9a5960b404542a40a732'
+            'ce806c6481b20d5b2352fc387816878c75285162f6404b3a969a95f9dbd6c7476fd4c6571f260886fa30ccc40e4a388ea8f6902e40ff90447e04bec3faf0669d'
+            '86851319e7c2d64256379d38fbe0cb50241e5fdbb896421c1cb8a799c21e10586210b0a9a83fba8eb205069473fa941ac8ada1b7049f09975b38ce56d223e2e4'
+            '9ed016c3a0ef7ecc8cafde35dedbb7cea7745c3eda9100f9c7b91b3de3db1a81655cb2b19b105389d88b386a5fba5a8bc557269e16c74ad3635817dbd13ca3ac')
+
+prepare() {
+  cd ${_pkgbase}-${pkgver}
+
+  interdiff ../dmenu-password-4.9.diff /dev/null | patch -p1
+  sed "s:@@ -683,6 +684,7 @@:@@ -685,6 +686,7 @@:" ../dmenu-lineheight-4.9.diff | patch -p1 -F3 # ignore context in case previous patch was applied
+  patch -p1 < ../dmenu-mousesupport-5.1.diff
+  patch -p1 < ../dmenu-numbers-4.9.diff
+  sed "s:@@ -690,6 +693,7 @@:@@ -691,6 +694,7 @@:" ../dmenu-xyw-5.0.diff | patch -p1 -F3 # ignore context in case password/lineheight patch was applied
+  cp ../dmenu-fuzzymatch-4.9.diff .
+  patch -p0 < ../fuzzymatch.patch
+  patch -p1 < dmenu-fuzzymatch-4.9.diff
+  sed -i "s:-bfi:-bfiF:" dmenu.c
+  cp ../dmenu-fuzzyhighlight-4.9.diff .
+  patch -p0 < ../fuzzyhighlight.patch
+  patch -p1 -F3 < dmenu-fuzzyhighlight-4.9.diff
+  
+  echo "CPPFLAGS+=${CPPFLAGS}" >> config.mk
+  echo "CFLAGS+=${CFLAGS}" >> config.mk
+  echo "LDFLAGS+=${LDFLAGS}" >> config.mk
+}
+
+build() {
+  cd ${_pkgbase}-${pkgver}
+  make \
+	  X11INC=/usr/include/X11 \
+	  X11LIB=/usr/lib/X11 \
+	  FREETYPEINC=/usr/include/freetype2
+}
+
+package() {
+  cd ${_pkgbase}-${pkgver}
+  make PREFIX=/usr DESTDIR="${pkgdir}" install
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${_pkgbase}"
+}
+
+# vim: ts=2 sw=2 et:

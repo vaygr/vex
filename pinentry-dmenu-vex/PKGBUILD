@@ -1,0 +1,39 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+
+_pkgbase=pinentry-dmenu
+pkgname=pinentry-dmenu-vex
+pkgver=0.2.2
+pkgrel=1
+pkgdesc="A pinentry program with the charm of dmenu (VEX Edition)"
+url="https://github.com/ritze/pinentry-dmenu"
+arch=('i686' 'x86_64')
+license=('GPL2')
+depends=('sh' 'libconfig'  'libxinerama' 'libxft')
+provides=('pinentry')
+conflicts=("${_pkgbase}")
+source=(${_pkgbase}-${pkgver}.tar.gz::${url}/archive/${pkgver}.tar.gz
+        lineheight.patch)
+sha256sums=('7b29b79e7c3b5c00d1f3320aa522e88064b1e366542bb94735905cabcf3d4c62'
+            '7decd46ff2ab9e06a27bf1fe0ef504306cb6cdeb5fed632a04e418bfafa4ad30')
+
+prepare() {
+	cd ${_pkgbase}-${pkgver}
+	# to use a custom config.h, place it in the package directory
+	if [[ -f ${SRCDEST}/config.h ]]; then
+		cp "${SRCDEST}/config.h" .
+	fi
+
+	patch -p0 < ../lineheight.patch
+}
+
+build(){
+	cd ${_pkgbase}-${pkgver}
+	make \
+		X11INC=/usr/include/X11 \
+		X11LIB=/usr/lib/X11
+}
+
+package() {
+	cd ${_pkgbase}-${pkgver}
+	make PREFIX=/usr DESTDIR="$pkgdir" install
+}
