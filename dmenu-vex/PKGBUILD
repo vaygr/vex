@@ -3,7 +3,7 @@
 _pkgbase=dmenu
 pkgname=dmenu-vex
 pkgver=5.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Generic menu for X (VEX Edition)'
 url='https://tools.suckless.org/dmenu/'
 arch=('x86_64')
@@ -20,8 +20,10 @@ source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
         https://tools.suckless.org/${_pkgbase}/patches/xyw/${_pkgbase}-xyw-5.0.diff
         https://tools.suckless.org/${_pkgbase}/patches/fuzzymatch/${_pkgbase}-fuzzymatch-4.9.diff
         https://tools.suckless.org/${_pkgbase}/patches/fuzzyhighlight/${_pkgbase}-fuzzyhighlight-4.9.diff
-        fuzzymatch.patch
-        fuzzyhighlight.patch)
+        https://tools.suckless.org/${_pkgbase}/patches/xresources-alt/${_pkgbase}-xresources-alt-5.0.diff
+        xresources-alt_fhl.patch
+        fuzzymatch_xr.patch
+        fuzzyhighlight_xr.patch)
 sha512sums=('2f950c30e15880e6081e04d73dd0cf8f402f52d793a77d22c3f10739bfed6222a9c4e7ec8eb3fc676422fea09e30b8cf9789f67b276b22c398c96f5ed3b56453'
             '455dfa017585962d64dbcb0a091c32809699f0e067ad28c94cc3bf86f4e6801b996bd4bac71ce15a5255114de5bdedc676b62fb76cb1b9f71be33017af1c72be'
             'b2fa2b33b9a2391285d0c3e5df22a9d68f4193bebb4720ce71678e8a87f43ae6c0a6b3f3fd3f63aa89be95880c04c8a83e43240b6ae4f90487bdb5a9325d084c'
@@ -30,25 +32,30 @@ sha512sums=('2f950c30e15880e6081e04d73dd0cf8f402f52d793a77d22c3f10739bfed6222a9c
             'af093f2e2be3c5c379add2340fcb9c4e63376a055849fe91685d033a486dae0b7d806b987b89498162ff00c3f47eaa0bda9601b08e5fdf4226af8bb18aa5057f'
             '6ce4ce0ddb9c1058f253ce46cdae8949c468d97ce7d787831d8a4f4ebd4db672761e2552703f58d36d01b2933dea624a30627629027b9a5960b404542a40a732'
             'ce806c6481b20d5b2352fc387816878c75285162f6404b3a969a95f9dbd6c7476fd4c6571f260886fa30ccc40e4a388ea8f6902e40ff90447e04bec3faf0669d'
-            '86851319e7c2d64256379d38fbe0cb50241e5fdbb896421c1cb8a799c21e10586210b0a9a83fba8eb205069473fa941ac8ada1b7049f09975b38ce56d223e2e4'
-            '9ed016c3a0ef7ecc8cafde35dedbb7cea7745c3eda9100f9c7b91b3de3db1a81655cb2b19b105389d88b386a5fba5a8bc557269e16c74ad3635817dbd13ca3ac')
+            'ddd20d6c2f5e57fc8c60be53943d10656f6e41558750e28050ca23858aa0e7fe3b189788419e6a87cb24a85f0ab8c83a486320023117b4a4734a80882d1265a8'
+            '6b7cad63784051c1c26fbcc3fb8eed6772af4cfdbbb15be575c5d2a35434d6cf8a3eba49232b78b909e9cf1105ce5187984730b6fe16efa3c981709212a667c7'
+            'f3018aaaf0221e01fa6113c4d7d170812b0b14c102475f7f0bb3af07fcdb846afba6393b6d4b9a9ec38cbaf37a56c2f16c107b0e48005bb94c9ae5e20d8dc31f'
+            '13a41482d69a1775abf0e6e961849fc6e45150c4810ac4651ecd3e9dbf7c3d6f16fcda39b0e3de01d12c708579b94921989bfefe6841419648564ceff84d81c6')
 
 prepare() {
   cd ${_pkgbase}-${pkgver}
 
   interdiff ../dmenu-password-4.9.diff /dev/null | patch -p1
   sed "s:@@ -683,6 +684,7 @@:@@ -685,6 +686,7 @@:" ../dmenu-lineheight-4.9.diff | patch -p1 -F3 # ignore context in case previous patch was applied
+  cp ../dmenu-xresources-alt-5.0.diff .
+  patch -p0 < ../xresources-alt_fhl.patch
+  patch -p1 < dmenu-xresources-alt-5.0.diff
   patch -p1 < ../dmenu-mousesupport-5.1.diff
   patch -p1 < ../dmenu-numbers-4.9.diff
   sed "s:@@ -690,6 +693,7 @@:@@ -691,6 +694,7 @@:" ../dmenu-xyw-5.0.diff | patch -p1 -F3 # ignore context in case password/lineheight patch was applied
   cp ../dmenu-fuzzymatch-4.9.diff .
-  patch -p0 < ../fuzzymatch.patch
+  patch -p0 < ../fuzzymatch_xr.patch
   patch -p1 < dmenu-fuzzymatch-4.9.diff
   sed -i "s:-bfi:-bfiF:" dmenu.c
   cp ../dmenu-fuzzyhighlight-4.9.diff .
-  patch -p0 < ../fuzzyhighlight.patch
+  patch -p0 < ../fuzzyhighlight_xr.patch
   patch -p1 -F3 < dmenu-fuzzyhighlight-4.9.diff
-  
+
   echo "CPPFLAGS+=${CPPFLAGS}" >> config.mk
   echo "CFLAGS+=${CFLAGS}" >> config.mk
   echo "LDFLAGS+=${LDFLAGS}" >> config.mk
