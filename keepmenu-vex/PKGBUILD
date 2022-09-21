@@ -1,0 +1,45 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+
+_pkgbase=keepmenu
+pkgname=keepmenu-vex
+pkgver=1.3.1
+pkgrel=1
+pkgdesc="dmenu/rofi frontend for KeePass databases"
+arch=('any')
+url="https://github.com/firecat53/keepmenu"
+license=('GPL3')
+depends=('python' 'python-pykeepass' 'python-pynput')
+makedepends=('python-build' 'python-setuptools' 'python-installer' 'python-wheel')
+optdepends=('dmenu: either dmenu or rofi is required'
+            'rofi: either dmenu or rofi is required'
+            'xdotool: required for typing non-U.S. Unicode characters')
+provides=("${_pkgbase}")
+conflicts=("${_pkgbase}")
+
+source=(${_pkgbase}-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz
+        https://patch-diff.githubusercontent.com/raw/firecat53/keepmenu/pull/132.patch)
+sha256sums=('8214f609403acabe26f3e2efcff8ac7bf48a80bbd55bf105251c6cf2619be19f'
+            'f7cd109f614e343288dca37b2f515f7f434aadbb83617ec80366b3bf9790e6fe')
+install=${_pkgbase}.install
+
+prepare() {
+  cd "${_pkgbase}-${pkgver}"
+
+  patch -p1 < ../132.patch
+}
+
+build() {
+  cd "${_pkgbase}-${pkgver}"
+
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "${_pkgbase}-${pkgver}"
+
+  python -m installer --destdir="$pkgdir" dist/*.whl
+
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${_pkgbase}/LICENSE"
+
+  install -Dm644 keepmenu.1 "${pkgdir}/usr/share/man/man1/keepmenu.1"
+}
