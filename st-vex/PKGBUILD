@@ -2,7 +2,7 @@
 
 _pkgbase=st
 pkgname=st-vex
-pkgver=0.8.5
+pkgver=0.9
 pkgrel=1
 pkgdesc='A simple virtual terminal emulator for X (VEX Edition)'
 arch=('i686' 'x86_64' 'armv7h' 'aarch64')
@@ -14,14 +14,15 @@ url=https://st.suckless.org
 source=(https://dl.suckless.org/${_pkgbase}/${_pkgbase}-${pkgver}.tar.gz
         terminfo.patch
         README.terminfo.rst
-        https://st.suckless.org/patches/alpha/${_pkgbase}-alpha-20220206-${pkgver}.diff
+        https://st.suckless.org/patches/alpha/${_pkgbase}-alpha-20220206-0.8.5.diff
         https://st.suckless.org/patches/blinking_cursor/${_pkgbase}-blinking_cursor-20211116-2f6e597.diff
-        https://st.suckless.org/patches/scrollback/${_pkgbase}-scrollback-${pkgver}.diff
+        https://st.suckless.org/patches/scrollback/${_pkgbase}-scrollback-0.8.5.diff
         https://st.suckless.org/patches/scrollback/${_pkgbase}-scrollback-mouse-20220127-2c5edf2.diff
         https://st.suckless.org/patches/scrollback/${_pkgbase}-scrollback-mouse-altscreen-20220127-2c5edf2.diff
         https://st.suckless.org/patches/xresources-with-reload-signal/${_pkgbase}-xresources-signal-reloading-20220407-ef05519.diff
+        blinking_cursor.patch
         xsetcursor.patch)
-sha256sums=('ea6832203ed02ff74182bcb8adaa9ec454c8f989e79232cb859665e2f544ab37'
+sha256sums=('f36359799734eae785becb374063f0be833cf22f88b4f169cd251b99324e08e7'
             'f9deea445a5c6203a0e8e699f3c3b55e27275f17fb408562c4dd5d649edeea23'
             '0ebcbba881832adf9c98ce9fe7667c851d3cc3345077cb8ebe32702698665be2'
             '42e4803ce2a67835f7e533a707a8a28e3804a26ced163145108970b9aee5fb81'
@@ -30,6 +31,7 @@ sha256sums=('ea6832203ed02ff74182bcb8adaa9ec454c8f989e79232cb859665e2f544ab37'
             '46ac9bcdbfeb0011533207cb0ab31657a3eb9196da1d0db346e6a9d1fc4b4f76'
             '8f2f17683f12d57b1c80461247fe15234f5f5a6fc52cdf48176c8358e699101d'
             '89e447a2f7b14db1fa33819ed6ea70096f7e3b68cba54b3e159b8db2b50e4bc2'
+            'd8e7f0671c05619a5edbe73469c1a73187668eace5a9a1ce80b6e2f9f6dba35c'
             '11973136a8940b93a08590409034b6f79b24079af5ddb132114fce9f55a4435e')
 _sourcedir="${_pkgbase}-${pkgver}"
 _makeopts="--directory=$_sourcedir"
@@ -71,7 +73,9 @@ prepare() {
   cd "${_sourcedir}"
 
   patch -p1 < ../st-alpha-20220206-0.8.5.diff
-  patch -p1 < ../st-blinking_cursor-20211116-2f6e597.diff
+  cp ../st-blinking_cursor-20211116-2f6e597.diff .
+  patch -p0 < ../blinking_cursor.patch
+  patch -p1 < st-blinking_cursor-20211116-2f6e597.diff
   patch -p1 < ../st-scrollback-0.8.5.diff
   patch -p1 < ../st-scrollback-mouse-20220127-2c5edf2.diff
   patch -p1 < ../st-scrollback-mouse-altscreen-20220127-2c5edf2.diff
