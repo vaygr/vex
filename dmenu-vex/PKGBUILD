@@ -2,8 +2,8 @@
 
 _pkgbase=dmenu
 pkgname=dmenu-vex
-pkgver=5.1
-pkgrel=2
+pkgver=5.2
+pkgrel=1
 pkgdesc='Generic menu for X (VEX Edition)'
 url='https://tools.suckless.org/dmenu/'
 arch=('x86_64')
@@ -15,44 +15,54 @@ conflicts=("${_pkgbase}")
 source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
         https://tools.suckless.org/${_pkgbase}/patches/password/${_pkgbase}-password-4.9.diff
         https://tools.suckless.org/${_pkgbase}/patches/line-height/${_pkgbase}-lineheight-4.9.diff
-        https://tools.suckless.org/${_pkgbase}/patches/mouse-support/${_pkgbase}-mousesupport-${pkgver}.diff
-        https://tools.suckless.org/${_pkgbase}/patches/numbers/${_pkgbase}-numbers-4.9.diff
+        https://tools.suckless.org/${_pkgbase}/patches/mouse-support/${_pkgbase}-mousesupport-5.1.diff
+        https://tools.suckless.org/${_pkgbase}/patches/numbers/${_pkgbase}-numbers-20220512-28fb3e2.diff
         https://tools.suckless.org/${_pkgbase}/patches/xyw/${_pkgbase}-xyw-5.0.diff
         https://tools.suckless.org/${_pkgbase}/patches/fuzzymatch/${_pkgbase}-fuzzymatch-4.9.diff
         https://tools.suckless.org/${_pkgbase}/patches/fuzzyhighlight/${_pkgbase}-fuzzyhighlight-4.9.diff
         https://tools.suckless.org/${_pkgbase}/patches/xresources-alt/${_pkgbase}-xresources-alt-5.0.diff
+        password.patch
+        xresources-alt.patch
         xresources-alt_fhl.patch
         fuzzymatch_xr.patch
+        fuzzyhighlight.patch
         fuzzyhighlight_xr.patch)
-sha512sums=('2f950c30e15880e6081e04d73dd0cf8f402f52d793a77d22c3f10739bfed6222a9c4e7ec8eb3fc676422fea09e30b8cf9789f67b276b22c398c96f5ed3b56453'
+sha512sums=('7be9bb76b11225ec86a30e643e9b884f6d13af581526085212cb7401383d448a72fe4dffc3ce84ffb8319dbf36ca8384597a89070cd27d39d5618f239a2da6e3'
             '455dfa017585962d64dbcb0a091c32809699f0e067ad28c94cc3bf86f4e6801b996bd4bac71ce15a5255114de5bdedc676b62fb76cb1b9f71be33017af1c72be'
             'b2fa2b33b9a2391285d0c3e5df22a9d68f4193bebb4720ce71678e8a87f43ae6c0a6b3f3fd3f63aa89be95880c04c8a83e43240b6ae4f90487bdb5a9325d084c'
             '777dd2aeba4725bf4c6adff3bf510f6eb6bf1699db06897fed2576f1162eb94e1e581c8b0d02ad3beebe5491b9631baf873f67aa8926d676f5c8b493dc6be1d7'
-            '15d88ea4f10c2fa6fb3eb7478f23b24210a0da3542ae7a5be609013500c15564eedd8153d850f079c2c1f4bab1f5e61ff51153e4c85445ee04a0de5c851e305a'
+            'ff851cc4ff38f2bf8cad727a1dcc7a927b43aba1159ea14178a4aa894f83db715a7ef920183d7362110c9736299cc3c171a4d645c994f395dda6fd79fa5adc57'
             'af093f2e2be3c5c379add2340fcb9c4e63376a055849fe91685d033a486dae0b7d806b987b89498162ff00c3f47eaa0bda9601b08e5fdf4226af8bb18aa5057f'
             '6ce4ce0ddb9c1058f253ce46cdae8949c468d97ce7d787831d8a4f4ebd4db672761e2552703f58d36d01b2933dea624a30627629027b9a5960b404542a40a732'
             'ce806c6481b20d5b2352fc387816878c75285162f6404b3a969a95f9dbd6c7476fd4c6571f260886fa30ccc40e4a388ea8f6902e40ff90447e04bec3faf0669d'
             'ddd20d6c2f5e57fc8c60be53943d10656f6e41558750e28050ca23858aa0e7fe3b189788419e6a87cb24a85f0ab8c83a486320023117b4a4734a80882d1265a8'
+            'e69d88c90d43e3442c2ca478aeb465d7dd67cb5e90966b3e83dcd132bac1fb5b6b7014c1b7a5f75caa7e951c5f3875da9a6a669c644368078d8084fc415b03da'
+            '048ad0b4e4f667becff53a0d143d9746b57a5849cda4b2f187ff4a814064b8bcb9dced32b715ca0fb357aea040647046bc3135f6e2759871c1db03af20dc19f0'
             '6b7cad63784051c1c26fbcc3fb8eed6772af4cfdbbb15be575c5d2a35434d6cf8a3eba49232b78b909e9cf1105ce5187984730b6fe16efa3c981709212a667c7'
             'f3018aaaf0221e01fa6113c4d7d170812b0b14c102475f7f0bb3af07fcdb846afba6393b6d4b9a9ec38cbaf37a56c2f16c107b0e48005bb94c9ae5e20d8dc31f'
-            '13a41482d69a1775abf0e6e961849fc6e45150c4810ac4651ecd3e9dbf7c3d6f16fcda39b0e3de01d12c708579b94921989bfefe6841419648564ceff84d81c6')
+            'c491be2c90e40e333a3674a9be1af918125d20cc7933125424a1a0e3f2c6a93b32657c4d22e35d44337fdbbc100d1837a50d8b6e36bfb2088f1c5c84e56200e0'
+            '91fd0c1119b87e9462d9859f98839c9068cdba9244f7b53deabd282e3f775422f90093a53ad50fba89a18c98a649522e3138afde55aa6e31b655e94dca3b080f')
 
 prepare() {
   cd ${_pkgbase}-${pkgver}
 
-  interdiff ../dmenu-password-4.9.diff /dev/null | patch -p1
+  interdiff ../dmenu-password-4.9.diff /dev/null > dmenu-password-4.9.diff
+  patch -p0 < ../password.patch
+  patch -p1 < dmenu-password-4.9.diff
   sed "s:@@ -683,6 +684,7 @@:@@ -685,6 +686,7 @@:" ../dmenu-lineheight-4.9.diff | patch -p1 -F3 # ignore context in case previous patch was applied
   cp ../dmenu-xresources-alt-5.0.diff .
+  patch -p0 < ../xresources-alt.patch
   patch -p0 < ../xresources-alt_fhl.patch
   patch -p1 < dmenu-xresources-alt-5.0.diff
   patch -p1 < ../dmenu-mousesupport-5.1.diff
-  patch -p1 < ../dmenu-numbers-4.9.diff
+  patch -p1 < ../dmenu-numbers-20220512-28fb3e2.diff
   sed "s:@@ -690,6 +693,7 @@:@@ -691,6 +694,7 @@:" ../dmenu-xyw-5.0.diff | patch -p1 -F3 # ignore context in case password/lineheight patch was applied
   cp ../dmenu-fuzzymatch-4.9.diff .
   patch -p0 < ../fuzzymatch_xr.patch
   patch -p1 < dmenu-fuzzymatch-4.9.diff
   sed -i "s:-bfi:-bfiF:" dmenu.c
   cp ../dmenu-fuzzyhighlight-4.9.diff .
+  patch -p0 < ../fuzzyhighlight.patch
   patch -p0 < ../fuzzyhighlight_xr.patch
   patch -p1 -F3 < dmenu-fuzzyhighlight-4.9.diff
 
