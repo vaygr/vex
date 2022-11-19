@@ -3,7 +3,7 @@
 _pkgbase=keepmenu
 pkgname=keepmenu-vex
 pkgver=1.3.1
-pkgrel=3
+pkgrel=4
 pkgdesc="dmenu/rofi frontend for KeePass databases"
 arch=('any')
 url="https://github.com/firecat53/keepmenu"
@@ -19,7 +19,7 @@ conflicts=("${_pkgbase}")
 source=(${_pkgbase}-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz
         https://patch-diff.githubusercontent.com/raw/firecat53/keepmenu/pull/132.patch)
 sha256sums=('8214f609403acabe26f3e2efcff8ac7bf48a80bbd55bf105251c6cf2619be19f'
-            'd30352bf2b419d71d705492231231594dd1eba024b6cda37b2958bf621ed121a')
+            '9420f0ab03b6d4d8306c720a0b2a388cd46dedb60d388dc57676e44b1666e492')
 install=${_pkgbase}.install
 
 prepare() {
