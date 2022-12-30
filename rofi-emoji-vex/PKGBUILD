@@ -1,0 +1,49 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+
+_pkgbase=rofi-emoji
+pkgname=rofi-emoji-vex
+pkgver=3.1.0
+pkgrel=2
+pkgdesc='A Rofi plugin for selecting emojis (VEX Edition)'
+url='https://github.com/Mange/rofi-emoji'
+arch=('x86_64')
+license=('MIT')
+depends=('rofi')
+checkdepends=('check')
+optdepends=(
+  'xsel: X11 support'
+  'xclip: X11 support'
+  'wl-clipboard: Wayland support'
+)
+provides=('rofi-emoji')
+conflicts=('rofi-emoji')
+source=(https://github.com/Mange/${_pkgbase}/archive/v${pkgver}/${_pkgbase}-${pkgver}.tar.gz
+        autotype.patch)
+b2sums=('f173f26786c457c3e34048c43e437648d3df5d4d04a147127d7c95827e2f22e78da4e12d896c703a90f32f5528eddf43aea215d1164391f56cfbae6f510a0dce'
+        '84afa6ee58cf46ba49e7db1990b16948d1ebe153fcfb9fcd915519c01c2cb4fbcbb92be6d4c389159d267cb7915d97252a4c7327a3227c2f61625f930eca6d8b')
+
+prepare() {
+  cd ${_pkgbase}-${pkgver}
+
+  patch -p0 < ../autotype.patch
+}
+
+build() {
+  cd ${_pkgbase}-${pkgver}
+  autoreconf -i
+  ./configure --prefix=/usr
+  make
+}
+
+check() {
+  cd ${_pkgbase}-${pkgver}
+  make check
+}
+
+package() {
+  cd ${_pkgbase}-${pkgver}
+  make DESTDIR="${pkgdir}/" install
+  install -Dm 644 LICENSE -t "${pkgdir}/usr/share/licenses/${_pkgbase}"
+}
+
+# vim: ts=2 sw=2 et:

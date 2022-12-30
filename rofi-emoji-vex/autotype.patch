@@ -1,0 +1,21 @@
+--- clipboard-adapter.sh.orig	2022-12-30 14:29:17.725318683 -0800
++++ clipboard-adapter.sh	2022-12-30 14:31:55.121793539 -0800
+@@ -122,6 +122,9 @@
+   wtype)
+     wtype -
+     ;;
++  autotype)
++    autotype
++    ;;
+   "")
+     show_error "Could not find any tool to handle insertion. Please install xdotool or wtype."
+     exit 1
+@@ -159,7 +162,7 @@
+   if [ "$XDG_SESSION_TYPE" = wayland ] || [ -n "$WAYLAND_DISPLAY" ]; then
+     try_tool wtype || return 1
+   else
+-    try_tool xdotool || return 1
++    try_tool xdotool || try_tool autotype || return 1
+   fi
+ }
+ 
