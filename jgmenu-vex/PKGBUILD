@@ -1,0 +1,39 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+
+_pkgbase=jgmenu
+pkgname=jgmenu-vex
+pkgver=4.4.1
+pkgrel=1
+pkgdesc="Simple, independent, contemporary-looking X11 menu, designed for scripting, ricing and tweaking (VEX Edition)"
+arch=('i686' 'x86_64')
+url="https://www.github.com/johanmalm/jgmenu"
+license=('GPL')
+provides=("${_pkgbase}")
+conflicts=("${_pkgbase}")
+depends=('libx11' 'cairo' 'pango' 'libxrandr' 'libxml2' 'glib2' 'menu-cache' 'python')
+source=("${_pkgbase}-${pkgver}.tar.gz::https://www.github.com/johanmalm/jgmenu/archive/v${pkgver}.tar.gz"
+        "opt-rsvg.patch")
+sha256sums=('164194eb9da7ccedccfb47796560b2a6b0f734ae6c5c3878ec184f7cfe7f8f32'
+            'd7e09acade5bb6b71e5d0801fd7a9f8073f40318eb7732c53486e9aa7c30f021')
+
+prepare() {
+	cd "${_pkgbase}-${pkgver}"
+
+	patch -p1 < ../opt-rsvg.patch
+}
+
+build() {
+	cd "${_pkgbase}-${pkgver}"
+	./configure --prefix=/usr --with-lx --with-pmenu --disable-svg
+	make
+}
+
+check(){
+	cd "${_pkgbase}-${pkgver}"
+	make test
+}
+
+package() {
+	cd "${_pkgbase}-${pkgver}"
+	make DESTDIR="$pkgdir" prefix=/usr install
+}
