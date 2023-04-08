@@ -1,0 +1,20 @@
+--- bemoji.orig	2022-11-10 05:58:16.000000000 -0800
++++ bemoji	2023-04-08 07:41:17.587271787 -0700
+@@ -158,7 +158,7 @@
+     fi
+ }
+ 
+-# Set default typing uti
++# Set default typing util
+ _typer() {
+     totype=$(cat -)
+     if [ -n "$BEMOJI_TYPE_CMD" ]; then
+@@ -168,6 +168,8 @@
+         wtype -s 30 "$totype"
+     elif [ -n "$DISPLAY" ] && command -v xdotool >/dev/null 2>&1; then
+         xdotool type --delay 30 "$totype"
++    elif [ -n "$DISPLAY" ] && command -v autotype >/dev/null 2>&1; then
++        autotype "$totype"
+     else
+         printf "No suitable typing tool found."
+         exit 1

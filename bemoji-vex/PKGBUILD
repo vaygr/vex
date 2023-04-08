@@ -1,0 +1,41 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+
+_pkgbase=bemoji
+pkgname=bemoji-vex
+pkgver=0.3.0
+pkgrel=2
+pkgdesc="Emoji picker that remembers your favorites (VEX Edition)"
+arch=('any')
+url="https://github.com/marty-oehme/bemoji"
+license=('MIT')
+depends=('curl')
+optdepends=(
+  'bemenu: Emoji picker menu'
+  'wofi: Emoji picker menu'
+  'rofi: Emoji picker menu'
+  'dmenu: Emoji picker menu'
+  'wl-clipboard: Clipboard support'
+  'xclip: Clipboard support'
+  'xsel: Clipboard support'
+  'wtype: Auto-typing support'
+  'xdotool: Auto-typing support'
+  'autotype: Auto-typing support'
+)
+provides=("${_pkgbase}")
+conflicts=("${_pkgbase}" "${_pkgbase}-git")
+source=("${_pkgbase}-${pkgver}.tar.gz::${url}/archive/refs/tags/${pkgver}.tar.gz"
+        "autotype.patch")
+sha256sums=('8a61b267ad79340da62c0826ca6cd12f6fccc2ccefb78bdbb6a6cbadd8cd3169'
+            '86e55de22595e0ca73afec2b9f87bc542174015bebcf131e16d73eebfa796017')
+
+prepare() {
+  cd ${_pkgbase}-${pkgver}
+
+  patch -p0 < ../autotype.patch
+}
+
+package() {
+  cd "${_pkgbase}-${pkgver}"
+  install -Dm644 -t "${pkgdir}/usr/share/licenses/${_pkgbase}" LICENSE
+  install -Dm755 -t "${pkgdir}/usr/bin" bemoji
+}
