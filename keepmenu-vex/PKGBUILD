@@ -3,7 +3,7 @@
 _pkgbase=keepmenu
 pkgname=keepmenu-vex
 pkgver=1.3.1
-pkgrel=5
+pkgrel=6
 pkgdesc="dmenu/rofi frontend for KeePass databases (VEX Edition)"
 arch=('any')
 url="https://github.com/firecat53/keepmenu"
