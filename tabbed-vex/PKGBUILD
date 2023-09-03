@@ -1,0 +1,62 @@
+# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+# Contributor: Yusuf Aktepe <yusuf@yusufaktepe.com>
+# Contributor: Lukas Fleischer <lfleischer@archlinux.org>
+# Contributor: totoloco <totoloco at gmx>
+
+_pkgbase=tabbed
+pkgname=tabbed-vex
+pkgver=0.7
+pkgrel=4
+pkgdesc='simple generic tabbed frontend to xembed-aware applications (VEX Edition)'
+arch=('x86_64')
+url='https://tools.suckless.org/tabbed'
+license=('custom:MIT/X')
+depends=('libx11' 'libxft')
+provides=("${_pkgbase}")
+conflicts=("${_pkgbase}")
+install='tabbed.install'
+source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
+        config.h
+        https://tools.suckless.org/${_pkgbase}/patches/alpha/alpha.diff
+        https://tools.suckless.org/${_pkgbase}/patches/autohide/${_pkgbase}-autohide-20201222-dabf6a2.diff
+        https://tools.suckless.org/${_pkgbase}/patches/xresources-with-reload-signal/${_pkgbase}-xresources-signal-reloading-20220622-014eabf.diff
+        alpha.patch
+        xresources.patch)
+sha256sums=('6e8682230a213d7dabf8a79306bd3ce023875b2295a9097db427d65c1c68f322'
+            '2eb768bcf6474522b7765643318cb6b0178f3ad92fec3c869403db99b1a8cbaa'
+            '920013a221c6f4fd834b52d2bf53dc20fc2d53912a9b1e311bc41f08979593f6'
+            'bd38525d0ebcfb6c61984ec52b3b23184985075879c86d1e0b7e239c0ec2bce4'
+            'a96c8e2df7718dd76986a2840fc39f98a88c1b9af89faf078f410b11391708f7'
+            '4d7dee3c98253d7752dcbe270c7332b347675dd9d8a147c16c3da2c3eb5131c5'
+            '9655b2bde646d48da50ef77e2fd17acd10ea3292cd905f2ac1ed4c619f733a02')
+
+prepare() {
+  cd "${srcdir}/${_pkgbase}-${pkgver}"
+
+  cp "${srcdir}/config.h" config.h
+
+  sed -i 's/CPPFLAGS =/CPPFLAGS +=/g' config.mk
+  sed -i 's/CFLAGS =/CFLAGS +=/g' config.mk
+  sed -i 's/LDFLAGS =/LDFLAGS +=/g' config.mk
+  sed -i '/xembed.1/d' Makefile
+
+  cp ../alpha.diff .
+  patch -p0 < ../alpha.patch
+  patch -p1 < alpha.diff
+  patch -p1 < ../tabbed-autohide-20201222-dabf6a2.diff
+  patch -p1 < ../tabbed-xresources-signal-reloading-20220622-014eabf.diff
+  patch -p0 < ../xresources.patch
+}
+
+build() {
+  cd "${srcdir}/${_pkgbase}-${pkgver}"
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${_pkgbase}-${pkgver}"
+
+  make PREFIX=/usr DESTDIR="${pkgdir}" install
+  install -Dm0644 LICENSE "${pkgdir}/usr/share/licenses/${_pkgbase}/LICENSE"
+}
