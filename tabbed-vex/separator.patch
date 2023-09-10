@@ -1,0 +1,18 @@
+--- config.h.orig	2023-09-07 07:57:09.169901108 -0700
++++ config.h	2023-09-07 08:02:06.042808331 -0700
+@@ -14,6 +14,7 @@
+ static int tabwidth       = 200;
+ static int focusnew       = 1;
+ static int urgentswitch   = 0;
++static int separator      = 4;
+ 
+ /*
+  * Where to place a new tab when it is opened. When npisrelative is True,
+@@ -50,6 +51,7 @@
+ 	{ "tabwidth",     INTEGER, &tabwidth},
+ 	{ "focusnew",     INTEGER, &focusnew},
+ 	{ "urgentswitch", INTEGER, &urgentswitch},
++	{ "separator",    INTEGER, &separator},
+ 	{ "newposition",  INTEGER, &newposition},
+ 	{ "npisrelative", INTEGER, &npisrelative},
+ };
