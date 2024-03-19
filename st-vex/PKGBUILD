@@ -1,9 +1,9 @@
-# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+# Maintainer: Val V <scm(at)vaygr(dot)net>
 
 _pkgbase=st
 pkgname=st-vex
-pkgver=0.9
-pkgrel=2
+pkgver=0.9.1
+pkgrel=1
 pkgdesc='A simple virtual terminal emulator for X (VEX Edition)'
 arch=('i686' 'x86_64' 'armv7h' 'aarch64')
 license=('MIT')
@@ -24,7 +24,7 @@ source=(https://dl.suckless.org/${_pkgbase}/${_pkgbase}-${pkgver}.tar.gz
         blinking_cursor.patch
         scrollback_lsd.patch
         xsetcursor.patch)
-sha256sums=('f36359799734eae785becb374063f0be833cf22f88b4f169cd251b99324e08e7'
+sha256sums=('16f43b9433ade9d70d6085c31f9fd99f2835eaade31221020f22143035dfc0d2'
             'f9deea445a5c6203a0e8e699f3c3b55e27275f17fb408562c4dd5d649edeea23'
             '0ebcbba881832adf9c98ce9fe7667c851d3cc3345077cb8ebe32702698665be2'
             '42e4803ce2a67835f7e533a707a8a28e3804a26ced163145108970b9aee5fb81'
