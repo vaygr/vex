@@ -1,8 +1,8 @@
-# Maintainer: Vlad Glagolev <scm(at)vaygr(dot)net>
+# Maintainer: Val V <scm(at)vaygr(dot)net>
 
 _pkgbase=dmenu
 pkgname=dmenu-vex
-pkgver=5.2
+pkgver=5.3
 pkgrel=1
 pkgdesc='Generic menu for X (VEX Edition)'
 url='https://tools.suckless.org/dmenu/'
@@ -15,7 +15,7 @@ conflicts=("${_pkgbase}")
 source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
         https://tools.suckless.org/${_pkgbase}/patches/password/${_pkgbase}-password-4.9.diff
         https://tools.suckless.org/${_pkgbase}/patches/line-height/${_pkgbase}-lineheight-4.9.diff
-        https://tools.suckless.org/${_pkgbase}/patches/mouse-support/${_pkgbase}-mousesupport-5.1.diff
+        https://tools.suckless.org/${_pkgbase}/patches/mouse-support/${_pkgbase}-mousesupport-5.3.diff
         https://tools.suckless.org/${_pkgbase}/patches/numbers/${_pkgbase}-numbers-20220512-28fb3e2.diff
         https://tools.suckless.org/${_pkgbase}/patches/xyw/${_pkgbase}-xyw-5.0.diff
         https://tools.suckless.org/${_pkgbase}/patches/fuzzymatch/${_pkgbase}-fuzzymatch-4.9.diff
@@ -27,10 +27,10 @@ source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
         fuzzymatch_xr.patch
         fuzzyhighlight.patch
         fuzzyhighlight_xr.patch)
-sha512sums=('7be9bb76b11225ec86a30e643e9b884f6d13af581526085212cb7401383d448a72fe4dffc3ce84ffb8319dbf36ca8384597a89070cd27d39d5618f239a2da6e3'
+sha512sums=('60f758134063ad7f304fbb0785c66dddc21461e5e5014f8735cf6d5c95dc22a177f069d48101e633ddffe5bbefc1118a2bf8b31daaf7b6438fdf6fe1bcb5d61c'
             '455dfa017585962d64dbcb0a091c32809699f0e067ad28c94cc3bf86f4e6801b996bd4bac71ce15a5255114de5bdedc676b62fb76cb1b9f71be33017af1c72be'
             'b2fa2b33b9a2391285d0c3e5df22a9d68f4193bebb4720ce71678e8a87f43ae6c0a6b3f3fd3f63aa89be95880c04c8a83e43240b6ae4f90487bdb5a9325d084c'
-            '777dd2aeba4725bf4c6adff3bf510f6eb6bf1699db06897fed2576f1162eb94e1e581c8b0d02ad3beebe5491b9631baf873f67aa8926d676f5c8b493dc6be1d7'
+            'a78c49c89e73bb0570b46c1282c8327d453cddc435806bb2bbc5ce8f3c64b6978b3cd12cd56e1e3d7f3b49462cbcf0d2f9a29ce30a5d940893fb6a9814236918'
             'ff851cc4ff38f2bf8cad727a1dcc7a927b43aba1159ea14178a4aa894f83db715a7ef920183d7362110c9736299cc3c171a4d645c994f395dda6fd79fa5adc57'
             'af093f2e2be3c5c379add2340fcb9c4e63376a055849fe91685d033a486dae0b7d806b987b89498162ff00c3f47eaa0bda9601b08e5fdf4226af8bb18aa5057f'
             '6ce4ce0ddb9c1058f253ce46cdae8949c468d97ce7d787831d8a4f4ebd4db672761e2552703f58d36d01b2933dea624a30627629027b9a5960b404542a40a732'
@@ -49,14 +49,14 @@ prepare() {
   interdiff ../dmenu-password-4.9.diff /dev/null > dmenu-password-4.9.diff
   patch -p0 < ../password.patch
   patch -p1 < dmenu-password-4.9.diff
-  sed "s:@@ -683,6 +684,7 @@:@@ -685,6 +686,7 @@:" ../dmenu-lineheight-4.9.diff | patch -p1 -F3 # ignore context in case previous patch was applied
+  sed "s:@@ -683,6 +684,7 @@:@@ -686,6 +687,7 @@:;s:-bfiv:-bfiPv:g" ../dmenu-lineheight-4.9.diff | patch -p1 -F3 # ignore context in case previous patch was applied
   cp ../dmenu-xresources-alt-5.0.diff .
   patch -p0 < ../xresources-alt.patch
   patch -p0 < ../xresources-alt_fhl.patch
   patch -p1 < dmenu-xresources-alt-5.0.diff
-  patch -p1 < ../dmenu-mousesupport-5.1.diff
+  patch -p1 < ../dmenu-mousesupport-5.3.diff
   patch -p1 < ../dmenu-numbers-20220512-28fb3e2.diff
-  sed "s:@@ -690,6 +693,7 @@:@@ -691,6 +694,7 @@:" ../dmenu-xyw-5.0.diff | patch -p1 -F3 # ignore context in case password/lineheight patch was applied
+  sed "s:@@ -690,6 +693,7 @@:@@ -694,6 +696,7 @@:" ../dmenu-xyw-5.0.diff | patch -p1 -F3 # ignore context in case password/lineheight patch was applied
   cp ../dmenu-fuzzymatch-4.9.diff .
   patch -p0 < ../fuzzymatch_xr.patch
   patch -p1 < dmenu-fuzzymatch-4.9.diff
