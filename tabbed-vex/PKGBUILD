@@ -6,7 +6,7 @@
 _pkgbase=tabbed
 pkgname=tabbed-vex
 pkgver=0.8
-pkgrel=1
+pkgrel=2
 pkgdesc='simple generic tabbed frontend to xembed-aware applications (VEX Edition)'
 arch=('x86_64')
 url='https://tools.suckless.org/tabbed'
@@ -27,11 +27,11 @@ source=(https://dl.suckless.org/tools/${_pkgbase}-${pkgver}.tar.gz
         separator.patch)
 sha256sums=('95bdffccb071083068d2b555c2524e9c7c57c9b64494d46c697e678d49a0a3d7'
             '2eb768bcf6474522b7765643318cb6b0178f3ad92fec3c869403db99b1a8cbaa'
-            '30bee90016ccdc4994ffe95afce6f9de5360de7d08df7a677978cc78d82a46d2'
+            '920013a221c6f4fd834b52d2bf53dc20fc2d53912a9b1e311bc41f08979593f6'
             'bd38525d0ebcfb6c61984ec52b3b23184985075879c86d1e0b7e239c0ec2bce4'
             'a6c20e0efc52e11c2d9903aac205c3624cbf3c4eab97e62e189f77229173d57a'
             '6e8d115479e3dc34ef4d267be9881af71cf5454932c57f076b3938ec73764957'
-            '63b3fcaa8bf096131c130e61040f075562bb6715d4024f55407c9075fff744ca'
+            'a6425781e38d8a56a4b0daf055c682e3a8ab0325d2d2640cd581aadb61763f9b'
             '76c62bb0a1909fed5252f8050fcdf8390cf12f222426a019959be6c509f47e59'
             '5418c29161f8300b810946900a632980a1be91c6a122a17b47b58ea028ab25f3'
             'e1b1daf30bfbf27ec403f44db180fef149b7ef00b9697c445fa5110aa608a8b8')
