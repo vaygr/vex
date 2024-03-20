@@ -1,0 +1,20 @@
+--- dmenu-lineheight-5.2.diff.orig	2024-03-19 19:30:57.858726669 -0700
++++ dmenu-lineheight-5.2.diff	2024-03-19 19:33:55.078133232 -0700
+@@ -55,15 +55,15 @@
+ index e7be8af..82b204b 100644
+ --- a/dmenu.c
+ +++ b/dmenu.c
+-@@ -148,7 +148,7 @@ drawmenu(void)
++@@ -147,7 +147,7 @@
+  {
+  	unsigned int curpos;
+  	struct item *item;
+ -	int x = 0, y = 0, w;
+ +	int x = 0, y = 0, fh = drw->fonts->h, w;
++ 	char *censort;
+  
+  	drw_setscheme(drw, scheme[SchemeNorm]);
+- 	drw_rect(drw, 0, 0, mw, mh, 1, 1);
+ @@ -165,7 +165,7 @@ drawmenu(void)
+  	curpos = TEXTW(text) - TEXTW(&text[cursor]);
+  	if ((curpos += lrpad / 2 - 1) < w) {
